@@ -14,8 +14,17 @@ router.get("/", async (req, res) => {
 });
 
 // Getting one
-router.get("/:id", getSubscriber, async (req, res) => {
-  res.send(res.subscriber);
+router.get("/:id", async (req, res) => {
+  try {
+    const subscriber = await Subscriber.findById(req.params.id);
+    if (subscriber == null) {
+      res.status(400).json({ msg: "Cannot find subscriber" });
+    } else {
+      res.status(200).json(subscriber);
+    }
+  } catch (err) {
+    res.status(400).json({ msg: err.message });
+  }
 });
 
 // Creating One
@@ -34,33 +43,38 @@ router.post("/", async (req, res) => {
 });
 
 // Updating One
-router.patch("/:id", getSubscriber, async (req, res) => {
-  if (req.body.name) {
-    res.subscriber.name = req.body.name;
+router.patch("/:id", (req, res) => {
+ try {
+  let subscriber = await Subscriber.findById(req.params.id);
+  if (subscriber == null) {
+    res.status(400).json({ msg: "Cannot find subscriber" });
+  } else {
+    
   }
-  if (req.body.subscribedToChannel) {
-    res.subscriber.subscribedToChannel = req.body.subscribedToChannel;
-  }
+ } catch (err) {
+    res.json({msg:err.message}) 
+ }
 
-  try {
-    const updatedSubscriber = await res.subscriber.save();
-    res.json(updatedSubscriber);
-  } catch (err) {
-    res.json({ msg: err.message });
-  }
+  if(req.body.name != null){
+}
+
 });
 
 // Deleting One
-router.delete("/:id", getSubscriber, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    await res.subscriber.remove();
-    res.json({ msg: "Subscriber removed" });
+    const subscriber = await Subscriber.findById(req.params.id);
+    if (subscriber == null) {
+      res.status(400).json({ msg: "Cannot find subscriber" });
+    } else {
+      await subscriber.remove();
+      res.status(200).json({ msg: "Subscriber deleted" });
+    }
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
 });
 
-// Deleting all
 router.delete("/", async (req, res) => {
   try {
     await Subscriber.deleteMany({});
@@ -69,20 +83,9 @@ router.delete("/", async (req, res) => {
     res.status(400).json({ msg: err.message });
   }
 });
-
-//middleware to find subscriber by id
-async function getSubscriber(req, res, next) {
-  let subscriber;
-  try {
-    subscriber = await Subscriber.findById(req.params.id);
-    if (subscriber == null) {
-      return res.status(404).json({ msg: "Cannot find subscriber" });
-    }
-  } catch (err) {
-    res.status(500).json({ msg: err.message });
-  }
-  res.subscriber = subscriber;
-  next();
-}
-
 module.exports = router;
+
+
+function getSubscriber(req, res){
+
+}

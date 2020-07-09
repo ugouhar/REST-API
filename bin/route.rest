@@ -2,7 +2,7 @@ GET http://localhost:3000/subscribers
 
 ###
 
-GET http://localhost:3000/subscribers/5f06f46175f10112c818a2e3
+GET http://localhost:3000/subscribers/5f06d1770fe1841a040b19af
 
 ###
 
@@ -15,7 +15,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:3000/subscribers/5f06f46175f10112c818a2e45
+PATCH http://localhost:3000/subscribers/5f06d17b0fe1841a040b19b0
 Content-Type: application/json
 
 {
@@ -25,7 +25,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/subscribers/5f06d17b0fe1841a040b19b0
+DELETE http://localhost:3000/subscribers/5f06cc43b2a4d71578bbb3cc
 
 ###
 # Delete all subscribers
