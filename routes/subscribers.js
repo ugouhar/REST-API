@@ -43,21 +43,25 @@ router.post("/", async (req, res) => {
 });
 
 // Updating One
-router.patch("/:id", (req, res) => {
- try {
-  let subscriber = await Subscriber.findById(req.params.id);
-  if (subscriber == null) {
-    res.status(400).json({ msg: "Cannot find subscriber" });
-  } else {
-    
+router.patch("/:id", async (req, res) => {
+  try {
+    let subscriber = await Subscriber.findById(req.params.id);
+    if (subscriber == null) {
+      res.status(400).json({ msg: "Cannot find subscriber" });
+    } else {
+      if (req.body.name) {
+        subscriber.name = req.body.name;
+      }
+      if (req.body.subscribedToChannel) {
+        subscriber.subscribedToChannel = req.body.subscribedToChannel;
+      }
+
+      await subscriber.save();
+      res.json(subscriber);
+    }
+  } catch (err) {
+    res.json({ msg: err.message });
   }
- } catch (err) {
-    res.json({msg:err.message}) 
- }
-
-  if(req.body.name != null){
-}
-
 });
 
 // Deleting One
@@ -85,7 +89,4 @@ router.delete("/", async (req, res) => {
 });
 module.exports = router;
 
-
-function getSubscriber(req, res){
-
-}
+function getSubscriber(req, res) {}
